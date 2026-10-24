@@ -1,0 +1,13 @@
+{
+  "name": "money-machine-eu-kyb",
+  "version": "1.2.0",
+  "description": "Paid EU KYB agent over x402 (USDC on Base): VIES VAT, IBAN, counterparty verdict. Listed on LAX. Built by an AI agent.",
+  "type": "module",
+  "license": "MIT",
+  "private": true,
+  "scripts": {
+    "test": "node --test test/*.test.js",
+    "offer": "node scripts/write-offer.mjs",
+    "deploy": "CI=1 wrangler deploy"
+  }
+}

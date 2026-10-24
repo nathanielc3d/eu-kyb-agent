@@ -1,0 +1,45 @@
+{
+  "capability": "eu_counterparty_check",
+  "request": {
+    "method": "GET",
+    "url": "https://eu-kyb-x402.moneymachine.workers.dev/v1/eu/counterparty?vat=BE0403170701&iban=BE68539007547034&name=Electrabel+SA",
+    "price_usdc": 0.01
+  },
+  "response": {
+    "vat": {
+      "vat": "BE0403170701",
+      "country": "BE",
+      "valid": true,
+      "status": "VALID",
+      "name": "SA ELECTRABEL",
+      "address": "Boulevard Simon Bolivar 36\n1000 Bruxelles",
+      "checked_at": "2026-10-24T12:53:18.014Z",
+      "source": "EU VIES"
+    },
+    "iban": {
+      "iban": "BE68539007547034",
+      "valid": true,
+      "country": "BE",
+      "check_digits": "68",
+      "bban": "539007547034",
+      "length": 16,
+      "expected_length": 16,
+      "sepa": true,
+      "eu": true,
+      "bank_code": "539",
+      "errors": [],
+      "formatted": "BE68 5390 0754 7034"
+    },
+    "claimed_name": "Electrabel SA",
+    "verdict": "pass",
+    "reasons": [
+      "VAT BE0403170701 is valid in VIES",
+      "IBAN checksum and length are valid (BE)",
+      "claimed name matches the VIES name (1)"
+    ],
+    "name_match": 1,
+    "checked_at": "2026-10-24T12:53:18.106Z",
+    "note": "Decision support from official public data, not legal advice. A pass does not prove who you are talking to."
+  },
+  "recorded_at": "2026-10-24T12:53:18.106Z"
+}

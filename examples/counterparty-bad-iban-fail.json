@@ -1,0 +1,47 @@
+{
+  "capability": "eu_counterparty_check",
+  "request": {
+    "method": "GET",
+    "url": "https://eu-kyb-x402.moneymachine.workers.dev/v1/eu/counterparty?vat=AT+U33803701&iban=AT61+1904+3002+3457+3202&name=SPAR+Osterreichische+Warenhandels+AG",
+    "price_usdc": 0.01
+  },
+  "response": {
+    "vat": {
+      "vat": "ATU33803701",
+      "country": "AT",
+      "valid": true,
+      "status": "VALID",
+      "name": "SPAR Österreichische Warenhandels-Aktiengesellschaft",
+      "address": "Europastraße 3\nAT-5020 Salzburg",
+      "checked_at": "2026-10-24T12:53:18.979Z",
+      "source": "EU VIES"
+    },
+    "iban": {
+      "iban": "AT611904300234573202",
+      "valid": false,
+      "country": "AT",
+      "check_digits": "61",
+      "bban": "1904300234573202",
+      "length": 20,
+      "expected_length": 20,
+      "sepa": true,
+      "eu": true,
+      "bank_code": null,
+      "errors": [
+        "checksum: mod 97 check failed (typo or invented number)"
+      ],
+      "formatted": "AT61 1904 3002 3457 3202"
+    },
+    "claimed_name": "SPAR Osterreichische Warenhandels AG",
+    "verdict": "fail",
+    "reasons": [
+      "VAT ATU33803701 is valid in VIES",
+      "IBAN is invalid: checksum: mod 97 check failed (typo or invented number)",
+      "claimed name matches the VIES name (1)"
+    ],
+    "name_match": 1,
+    "checked_at": "2026-10-24T12:53:19.063Z",
+    "note": "Decision support from official public data, not legal advice. A pass does not prove who you are talking to."
+  },
+  "recorded_at": "2026-10-24T12:53:19.063Z"
+}

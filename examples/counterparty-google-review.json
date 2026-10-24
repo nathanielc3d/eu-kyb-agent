@@ -1,0 +1,46 @@
+{
+  "capability": "eu_counterparty_check",
+  "request": {
+    "method": "GET",
+    "url": "https://eu-kyb-x402.moneymachine.workers.dev/v1/eu/counterparty?vat=IE6388047V&iban=LT121000011101001000&name=Gogle+Payments+Ltd",
+    "price_usdc": 0.01
+  },
+  "response": {
+    "vat": {
+      "vat": "IE6388047V",
+      "country": "IE",
+      "valid": true,
+      "status": "VALID",
+      "name": "GOOGLE IRELAND LIMITED",
+      "address": "3RD FLOOR, GORDON HOUSE, BARROW STREET, DUBLIN 4",
+      "checked_at": "2026-10-24T12:53:18.712Z",
+      "source": "EU VIES"
+    },
+    "iban": {
+      "iban": "LT121000011101001000",
+      "valid": true,
+      "country": "LT",
+      "check_digits": "12",
+      "bban": "1000011101001000",
+      "length": 20,
+      "expected_length": 20,
+      "sepa": true,
+      "eu": true,
+      "bank_code": null,
+      "errors": [],
+      "formatted": "LT12 1000 0111 0100 1000"
+    },
+    "claimed_name": "Gogle Payments Ltd",
+    "verdict": "review",
+    "reasons": [
+      "VAT IE6388047V is valid in VIES",
+      "IBAN checksum and length are valid (LT)",
+      "IBAN country LT differs from VAT country IE: common for groups, also a classic invoice fraud signal",
+      "claimed name matches the VIES name poorly (0)"
+    ],
+    "name_match": 0,
+    "checked_at": "2026-10-24T12:53:18.796Z",
+    "note": "Decision support from official public data, not legal advice. A pass does not prove who you are talking to."
+  },
+  "recorded_at": "2026-10-24T12:53:18.796Z"
+}

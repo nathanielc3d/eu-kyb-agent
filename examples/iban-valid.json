@@ -1,0 +1,25 @@
+{
+  "capability": "iban_check",
+  "request": {
+    "method": "GET",
+    "url": "https://eu-kyb-x402.moneymachine.workers.dev/v1/iban?iban=DE89+3704+0044+0532+0130+00",
+    "price_usdc": 0.003
+  },
+  "response": {
+    "iban": "DE89370400440532013000",
+    "valid": true,
+    "country": "DE",
+    "check_digits": "89",
+    "bban": "370400440532013000",
+    "length": 22,
+    "expected_length": 22,
+    "sepa": true,
+    "eu": true,
+    "bank_code": "37040044",
+    "errors": [],
+    "formatted": "DE89 3704 0044 0532 0130 00",
+    "checked_at": "2026-10-24T12:53:19.318Z",
+    "source": "ISO 13616 mod 97 and the SWIFT IBAN registry lengths (offline)"
+  },
+  "recorded_at": "2026-10-24T12:53:19.318Z"
+}

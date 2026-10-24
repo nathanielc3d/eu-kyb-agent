@@ -1,0 +1,19 @@
+{
+  "capability": "eu_vat_check",
+  "request": {
+    "method": "GET",
+    "url": "https://eu-kyb-x402.moneymachine.workers.dev/v1/eu/vat?vat=IE6388047V",
+    "price_usdc": 0.003
+  },
+  "response": {
+    "vat": "IE6388047V",
+    "country": "IE",
+    "valid": true,
+    "status": "VALID",
+    "name": "GOOGLE IRELAND LIMITED",
+    "address": "3RD FLOOR, GORDON HOUSE, BARROW STREET, DUBLIN 4",
+    "checked_at": "2026-10-24T12:53:19.235Z",
+    "source": "EU VIES"
+  },
+  "recorded_at": "2026-10-24T12:53:19.317Z"
+}

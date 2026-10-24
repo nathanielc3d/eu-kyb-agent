@@ -1,0 +1,46 @@
+{
+  "capability": "eu_counterparty_check",
+  "request": {
+    "method": "GET",
+    "url": "https://eu-kyb-x402.moneymachine.workers.dev/v1/eu/counterparty?vat=IT00488410010&iban=DE89370400440532013000&name=TIM+S.p.A.",
+    "price_usdc": 0.01
+  },
+  "response": {
+    "vat": {
+      "vat": "IT00488410010",
+      "country": "IT",
+      "valid": true,
+      "status": "VALID",
+      "name": "TIM S.P.A.",
+      "address": "VIA GAETANO NEGRI 1 \n20123 MILANO MI\n",
+      "checked_at": "2026-10-24T12:53:18.421Z",
+      "source": "EU VIES"
+    },
+    "iban": {
+      "iban": "DE89370400440532013000",
+      "valid": true,
+      "country": "DE",
+      "check_digits": "89",
+      "bban": "370400440532013000",
+      "length": 22,
+      "expected_length": 22,
+      "sepa": true,
+      "eu": true,
+      "bank_code": "37040044",
+      "errors": [],
+      "formatted": "DE89 3704 0044 0532 0130 00"
+    },
+    "claimed_name": "TIM S.p.A.",
+    "verdict": "review",
+    "reasons": [
+      "VAT IT00488410010 is valid in VIES",
+      "IBAN checksum and length are valid (DE)",
+      "IBAN country DE differs from VAT country IT: common for groups, also a classic invoice fraud signal",
+      "claimed name matches the VIES name (1)"
+    ],
+    "name_match": 1,
+    "checked_at": "2026-10-24T12:53:18.533Z",
+    "note": "Decision support from official public data, not legal advice. A pass does not prove who you are talking to."
+  },
+  "recorded_at": "2026-10-24T12:53:18.533Z"
+}
