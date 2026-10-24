@@ -98,8 +98,36 @@ function bazaar(path) {
     },
   };
 }
+// ---- Base Builder Code (x402 "builder-code" extension, ERC-8021 Schema 2) ----
+// Config value BUILDER_CODE (wrangler var, e.g. "bc_xxxxxxxx" from base.dev). Empty = extension not advertised,
+// behaviour identical to before. When set, the 402 declares { a: code } so clients echo it and a
+// builder-code-aware facilitator appends the ERC-8021 suffix to the settlement calldata.
+// Spec: https://github.com/x402-foundation/x402/blob/main/specs/extensions/builder_code.md
+const BC_PATTERN = /^[a-z0-9_]{1,32}$/;
+const BC_MAX_ECHO_S = 10; // MAX_CLIENT_SERVICE_CODES + MAX_SERVER_SERVICE_CODES
+let BUILDER_CODE = "";
+export function setBuilderCode(code) { const c = String(code || "").trim(); BUILDER_CODE = BC_PATTERN.test(c) ? c : ""; return BUILDER_CODE; }
+const BC_CODE_SCHEMA = { type: "string", pattern: "^[a-z0-9_]{1,32}$" };
+export function builderCodeExtension() {
+  if (!BUILDER_CODE) return null;
+  return { info: { a: BUILDER_CODE }, schema: { $schema: "https://json-schema.org/draft/2020-12/schema", type: "object",
+    properties: { a: { ...BC_CODE_SCHEMA, description: "App builder code" }, w: { ...BC_CODE_SCHEMA, description: "Wallet builder code" },
+      s: { type: "array", items: BC_CODE_SCHEMA, description: "Service builder codes" } }, additionalProperties: false } };
+}
+// Server-side echo validation (spec: resource server MUST reject extension_echo_mismatch before verify/settle).
+export function builderCodeEchoError(payload) {
+  const raw = payload && payload.extensions && payload.extensions["builder-code"];
+  if (!raw) return null;
+  const e = raw.info && typeof raw.info === "object" ? raw.info : raw; // @x402 clients echo { info, schema }
+  if (e.a !== undefined && e.a !== BUILDER_CODE) return "extension_echo_mismatch: builder-code a";
+  const s = e.s === undefined ? [] : Array.isArray(e.s) ? e.s : [e.s];
+  if (s.length > BC_MAX_ECHO_S || s.some(x => !BC_PATTERN.test(String(x)))) return "extension_echo_mismatch: builder-code s";
+  return null;
+}
 function paymentRequiredV2(url, path, error) {
-  return { x402Version: 2, error, resource: resourceInfo(url, path), accepts: [reqV2(path)], extensions: { bazaar: bazaar(path) } };
+  const extensions = { bazaar: bazaar(path) };
+  const bc = builderCodeExtension(); if (bc) extensions["builder-code"] = bc;
+  return { x402Version: 2, error, resource: resourceInfo(url, path), accepts: [reqV2(path)], extensions };
 }
 // 402: v2 object in PAYMENT-REQUIRED header (canonical), v1 object in body (legacy clients/scanners)
 function respond402(url, path, error, extraHeaders = {}) {
@@ -131,6 +159,7 @@ async function bump(env, key) {
 
 export default {
   async fetch(request, env, ctx) {
+    setBuilderCode(env && env.BUILDER_CODE);
     const res = await handle(request);
     try {
       const path = new URL(request.url).pathname.replace(/\/+$/, "") || "/";
@@ -182,6 +211,8 @@ async function handle(request) {
       const a = payload.accepted || {};
       if (a.scheme !== "exact" || a.network !== NET_V2 || !same(a.asset, USDC_BASE) || !same(a.payTo, PAY_TO) || String(a.amount) !== req.amount)
         return respond402(url, path, "payment does not match requirements (expected exact / eip155:8453 / USDC / payTo / amount)");
+      const bcErr = builderCodeEchoError(payload);
+      if (bcErr) return respond402(url, path, bcErr);
     } else {
       req = reqV1(url, path);
       if (payload.scheme !== "exact" || payload.network !== NET_V1) return respond402(url, path, "unsupported scheme/network (expected exact on base)");
